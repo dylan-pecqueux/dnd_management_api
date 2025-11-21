@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { MonsterService } from './monster.service';
 import { CreateMonsterDto } from './dto/create-monster.dto';
 import { UpdateMonsterDto } from './dto/update-monster.dto';
@@ -18,17 +18,17 @@ export class MonsterController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.monsterService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.monsterService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMonsterDto: UpdateMonsterDto) {
-    return this.monsterService.update(+id, updateMonsterDto);
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateMonsterDto: UpdateMonsterDto) {
+    return this.monsterService.update(id, updateMonsterDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseIntPipe) id: number) {
     return this.monsterService.remove(+id);
   }
 }

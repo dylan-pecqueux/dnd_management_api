@@ -1,4 +1,4 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Monster } from "./monster.entity";
 
 @Entity()
@@ -7,6 +7,7 @@ export class MonsterAbility {
   id: number;
 
   @OneToOne(() => Monster, (m) => m.ability, { onDelete: 'CASCADE' })
+  @JoinColumn()
   monster: Monster;
 
   @Column({ nullable: true }) str: number;
@@ -29,5 +30,4 @@ export class MonsterAbility {
   @Column({ nullable: true }) int_save: number;
   @Column({ nullable: true }) wis_save: number;
   @Column({ nullable: true }) cha_save: number;
-
 }
