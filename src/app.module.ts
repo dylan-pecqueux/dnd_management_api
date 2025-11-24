@@ -6,6 +6,9 @@ import { MonsterModule } from './monster/monster.module';
 import { ConfigModule } from '@nestjs/config';
 import { DamageTypeModule } from './damage-type/damage-type.module';
 import { ConditionTypeModule } from './condition-type/condition-type.module';
+import { AdventurerModule } from './adventurer/adventurer.module';
+import { CombatantModule } from './combatant/combatant.module';
+import { EncounterModule } from './encounter/encounter.module';
 
 
 @Module({
@@ -24,6 +27,9 @@ import { ConditionTypeModule } from './condition-type/condition-type.module';
     MonsterModule,
     DamageTypeModule,
     ConditionTypeModule,
+    AdventurerModule,
+    CombatantModule,
+    EncounterModule,
   ],
   controllers: [AppController],
   providers: [AppService],
