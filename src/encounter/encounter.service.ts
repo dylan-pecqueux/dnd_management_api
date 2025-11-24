@@ -7,6 +7,8 @@ import { Encounter } from './entities/encounter.entity';
 import { Combatant } from 'src/combatant/entities/combatant.entities';
 import { CreateCombatantDto } from 'src/combatant/dto/create-combatant.dto';
 import { UpdateHpDto } from 'src/combatant/dto/update-hp.dto';
+import { Monster } from 'src/monster/entities/monster.entity';
+import { Adventurer } from 'src/adventurer/entities/adventurer.entity';
 
 @Injectable()
 export class EncounterService {
@@ -15,6 +17,10 @@ export class EncounterService {
     private readonly encountersRepository: Repository<Encounter>,
     @InjectRepository(Combatant)
     private readonly combatantsRepository: Repository<Combatant>,
+    @InjectRepository(Monster)
+    private readonly monsterRepos: Repository<Monster>,
+    @InjectRepository(Adventurer)
+    private readonly adventurerRepo: Repository<Adventurer>,
   ) {}
 
   async create(createEncounterDto: CreateEncounterDto): Promise<Encounter> {
@@ -29,13 +35,39 @@ export class EncounterService {
     }
     const combatant = this.combatantsRepository.create({ ...combatantDto, encounter });
 
+  if (combatantDto.monsterId) {
+    const monster = await this.monsterRepos.findOne({ where: { id: combatantDto.monsterId } });
+    combatant.monster = monster ?? undefined;
+    combatant.name = monster?.name ?? combatant.name;
+  }
+
+  if (combatantDto.adventurerId) {
+    const adventurer = await this.adventurerRepo.findOne({ where: { id: combatantDto.adventurerId } });
+    combatant.adventurer = adventurer ?? undefined;
+    combatant.name = adventurer?.name ?? combatant.name;
+  }
+
     return this.combatantsRepository.save(combatant);
   }
 
   async getEncounter(encounterId: number): Promise<Encounter> {
       const encounter = await this.encountersRepository.findOne({
       where: { id: encounterId },
-      relations: ['combatants', 'combatants.monster', 'combatants.adventurer'],
+      relations: [
+        'combatants', 
+        'combatants.monster', 
+        'combatants.adventurer',
+        'combatants.monster.ability',
+        'combatants.monster.skills',
+        'combatants.monster.senses',
+        'combatants.monster.traits',
+        'combatants.monster.actions',
+        'combatants.monster.reactions',
+        'combatants.monster.legendaryActions',
+        'combatants.monster.damageResistances',
+        'combatants.monster.damageImmunities',
+        'combatants.monster.conditionImmunities',
+      ],
       order: { combatants: { initiative: 'DESC' } },
     });
 

@@ -17,6 +17,9 @@ export class Combatant {
   @ManyToOne(() => Adventurer, { nullable: true })
   adventurer?: Adventurer;
 
+  @Column({ nullable: true })
+  name: string;
+
   @Column()
   initiative: number;
 

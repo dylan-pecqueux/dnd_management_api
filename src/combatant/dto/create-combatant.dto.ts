@@ -2,6 +2,7 @@ import { IsNumber, IsOptional, IsBoolean, IsString } from 'class-validator';
 
 export class CreateCombatantDto {
   @IsString()
+  @IsOptional()
   name: string;
 
   @IsNumber()
