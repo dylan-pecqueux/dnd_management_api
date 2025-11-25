@@ -50,6 +50,10 @@ export class EncounterService {
     return this.combatantsRepository.save(combatant);
   }
 
+  async findAllEncounter(): Promise<Encounter[]> {
+    return this.encountersRepository.find({relations: ['combatants', 'combatants.monster', 'combatants.adventurer']});
+  }
+
   async getEncounter(encounterId: number): Promise<Encounter> {
       const encounter = await this.encountersRepository.findOne({
       where: { id: encounterId },

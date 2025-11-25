@@ -19,6 +19,11 @@ export class EncounterController {
     return this.encounterService.addCombatant(id, combatantDto);
   }
 
+  @Get()
+  findAll() {
+    return this.encounterService.findAllEncounter();
+  }
+
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.encounterService.getEncounter(id);
