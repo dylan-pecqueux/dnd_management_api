@@ -7,6 +7,9 @@ export class Encounter {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({nullable: true})
+  name: string;
+
   @Column({ default: 1})
   turn: number;
 
