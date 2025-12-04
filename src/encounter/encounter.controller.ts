@@ -34,6 +34,11 @@ export class EncounterController {
     return this.encounterService.updateHp(id, dto);
   }
 
+  @Patch('combatant/:id/initiative')
+  updateInitiative(@Param('id', ParseIntPipe) id: number, @Body() dto: { initiative: number }) {
+    return this.encounterService.updateInitiative(id, dto.initiative);
+  }
+
   @Patch(':id/next-turn')
   nextTurn(@Param('id', ParseIntPipe) id: number) {
     return this.encounterService.nextTurn(id);

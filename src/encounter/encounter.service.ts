@@ -115,6 +115,16 @@ export class EncounterService {
     return this.combatantsRepository.save(combatant);
   }
 
+  async updateInitiative(combatantId: number, initiative: number): Promise<Combatant> {
+    const combatant = await this.combatantsRepository.findOne({
+      where: { id: combatantId },
+    });
+    if (!combatant) throw new NotFoundException('Combatant not found');
+
+    combatant.initiative = initiative;
+    return this.combatantsRepository.save(combatant);
+  }
+
   async nextTurn(encounterId: number): Promise<Encounter> {
     const combat = await this.getEncounter(encounterId);
 
