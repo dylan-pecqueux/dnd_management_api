@@ -125,13 +125,16 @@ export class EncounterService {
     return this.combatantsRepository.save(combatant);
   }
 
-  async nextTurn(encounterId: number): Promise<Encounter> {
-    const combat = await this.getEncounter(encounterId);
+  async nextTurn(encounterId: number): Promise<{message}> {
+    const encounter = await this.encountersRepository.findOne({
+      where: { id: encounterId },
+    });
+    if (!encounter) throw new NotFoundException('Combat not found');
 
-    if (!combat.turn) combat.turn = 1;
+    if (!encounter.turn) encounter.turn = 1;
 
-    combat.turn++;
+     await this.encountersRepository.update({ id: encounterId}, {turn: encounter.turn+1})
 
-    return this.combatantsRepository.save(combat);
+    return { message: 'Turn updated' };
   }
 }
